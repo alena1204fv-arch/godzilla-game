@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Годзилла 🦖</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <button id="btn-mute" onclick="toggleMute()" title="Выключить звук">🔊</button>
+
+  <!-- ЭКРАН: ЗАГРУЗКА -->
+  <div id="screen-load" class="screen active">
+    <div class="menu-title">🦖</div>
+    <h1>ГОДЗИЛЛА</h1>
+    <div id="load-bar-wrap">
+      <div id="load-bar"></div>
+    </div>
+    <p id="load-text">Загрузка...</p>
+  </div>
+
+  <!-- ЭКРАН: МЕНЮ -->
+  <div id="screen-menu" class="screen">
+    <div class="menu-title">🦖</div>
+    <h1>ГОДЗИЛЛА</h1>
+    <p class="subtitle">Путь сквозь монстров</p>
+    <div class="menu-btns">
+      <button id="btn-start">▶ Начать игру</button>
+      <button id="btn-records">🏆 Рекорды</button>
+    </div>
+  </div>
+
+  <!-- ЭКРАН: РЕКОРДЫ -->
+  <div id="screen-records" class="screen">
+    <h1 class="records-title">🏆 Таблица рекордов</h1>
+    <div id="records-list"></div>
+    <button id="btn-back">← Назад</button>
+  </div>
+
+  <!-- ЭКРАН: ХОДЬБА -->
+  <div id="screen-walk" class="screen">
+    <div id="walk-area">
+      <div id="bg-layer"></div>
+      <div style="position:absolute; bottom:5px; left:80px; transform:scaleX(-1); z-index:3;">
+        <div id="hero-walk">🦖</div>
+      </div>
+      <div id="enemy-walk"></div>
+      <div id="walk-msg"></div>
+    </div>
+    <div id="walk-status">
+      <span id="level-label">Монстр 1 из 3</span>
+      <div id="hp-bar-wrap">
+        ❤️
+        <div id="hp-bar-bg"><div id="hp-bar"></div></div>
+        <span id="hp-label">150</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЭКРАН: БОЙ -->
+  <div id="screen-fight" class="screen">
+    <div id="fight-area">
+
+      <div class="fighter" id="fighter-hero">
+        <div id="hero-char">🦖</div>
+        <div class="fighter-name">Годзилла</div>
+        <div class="hp-wrap">
+          <div class="hp-bar-bg"><div id="hero-hp-bar"></div></div>
+          <span id="hero-hp-label">150</span>
+        </div>
+      </div>
+
+      <div id="fight-mid">
+        <div id="fight-log"></div>
+        <div id="vs-label">⚔️</div>
+        <!-- Шкала спецатаки -->
+        <div id="special-wrap">
+          <div id="special-label">⚡ Спецатака</div>
+          <div id="special-bar-bg"><div id="special-bar"></div></div>
+        </div>
+      </div>
+
+      <div class="fighter" id="fighter-enemy">
+        <div id="enemy-char"></div>
+        <div class="fighter-name" id="enemy-name"></div>
+        <div class="hp-wrap">
+          <div class="hp-bar-bg"><div id="enemy-hp-bar"></div></div>
+          <span id="enemy-hp-label"></span>
+        </div>
+      </div>
+
+    </div>
+    <div id="fight-controls">
+      <button id="btn-attack">👊 Удар</button>
+      <button id="btn-special" disabled>⚡ Спецатака</button>
+      <p class="hint">Пробел — удар · Enter — спецатака</p>
+    </div>
+  </div>
+
+  <!-- ЭКРАН: ПОБЕДА -->
+  <div id="screen-win" class="screen">
+    <div class="result-icon">🏆</div>
+    <h1>Победа!</h1>
+    <p class="subtitle">Годзилла разгромил всех монстров!</p>
+    <p id="win-score" class="win-score"></p>
+    <div class="menu-btns">
+      <button id="btn-restart-win">▶ Играть снова</button>
+      <button id="btn-records-win">🏆 Рекорды</button>
+    </div>
+  </div>
+
+  <!-- ЭКРАН: ПОРАЖЕНИЕ -->
+  <div id="screen-lose" class="screen">
+    <div class="result-icon">💀</div>
+    <h1>Поражение</h1>
+    <p class="subtitle" id="lose-msg">Годзилла пал в бою...</p>
+    <button id="btn-restart-lose">↩ Попробовать снова</button>
+  </div>
+
+  <script src="sound.js"></script>
+  <script src="records.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

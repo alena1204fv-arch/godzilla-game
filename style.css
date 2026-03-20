@@ -1,0 +1,499 @@
+/* === СБРОС И БАЗА === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0a0a1a;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* === ЭКРАНЫ === */
+.screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0; left: 0;
+}
+.screen.active { display: flex; }
+
+/* === ЭКРАН ЗАГРУЗКИ === */
+#screen-load h1 {
+  font-size: 52px;
+  letter-spacing: 6px;
+  color: #00ff88;
+  text-shadow: 0 0 20px #00cc66;
+  margin-bottom: 32px;
+}
+
+#load-bar-wrap {
+  width: 320px;
+  height: 12px;
+  background: #1a1a2e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+#load-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00aa55, #00ff88);
+  border-radius: 6px;
+  transition: width 0.08s linear;
+}
+
+#load-text {
+  font-size: 14px;
+  color: #555;
+  letter-spacing: 1px;
+}
+
+/* === МЕНЮ === */
+.menu-title { font-size: 80px; margin-bottom: 8px; }
+
+#screen-menu h1 {
+  font-size: 52px;
+  letter-spacing: 6px;
+  color: #00ff88;
+  text-shadow: 0 0 20px #00cc66;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 28px;
+}
+
+.menu-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* === КНОПКИ === */
+button {
+  padding: 14px 44px;
+  font-size: 18px;
+  font-weight: bold;
+  background: #00aa55;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s, background 0.15s;
+}
+button:hover  { background: #00ff88; }
+button:active { transform: scale(0.96); }
+button:disabled { opacity: 0.35; cursor: default; background: #00aa55; }
+
+/* === РЕКОРДЫ === */
+#screen-records { gap: 20px; }
+
+.records-title {
+  font-size: 36px;
+  color: #ffcc00;
+  text-shadow: 0 0 16px #ffaa00;
+}
+
+#records-list {
+  width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.record-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #0d1117;
+  border: 1px solid #1e2a1e;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 15px;
+}
+
+.record-rank {
+  font-size: 22px;
+  min-width: 36px;
+}
+
+.record-name {
+  flex: 1;
+  color: #ccc;
+}
+
+.record-score {
+  font-size: 18px;
+  font-weight: bold;
+  color: #00ff88;
+}
+
+.record-date {
+  font-size: 12px;
+  color: #444;
+}
+
+.records-empty {
+  color: #555;
+  font-size: 16px;
+  text-align: center;
+  padding: 40px 0;
+}
+
+#btn-back {
+  background: #222;
+  color: #888;
+  padding: 10px 28px;
+  font-size: 16px;
+}
+#btn-back:hover { background: #333; color: #fff; }
+
+/* === ХОДЬБА === */
+#walk-area {
+  width: 820px;
+  height: 180px;
+  background: #0d1117;
+  border: 2px solid #1e2a1e;
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Скроллящийся фон с городом */
+#bg-layer {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 400%; height: 100%;
+  animation: scroll-bg 5s linear infinite;
+  display: flex;
+}
+
+.bg-building {
+  position: absolute;
+  bottom: 5px;
+  background: #0f1a0f;
+  border: 1px solid #1a2a1a;
+  border-radius: 2px 2px 0 0;
+}
+
+@keyframes scroll-bg {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-25%); }
+}
+
+#walk-area::after {
+  content: '';
+  position: absolute;
+  bottom: 0; width: 100%;
+  height: 5px;
+  background: #1e3a1e;
+  z-index: 1;
+}
+
+#hero-walk {
+  font-size: 54px; line-height: 1;
+  display: inline-block;
+  animation: walk-step 0.35s ease-in-out infinite;
+}
+
+@keyframes walk-step {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+
+#enemy-walk {
+  position: absolute;
+  bottom: 5px; right: -90px;
+  font-size: 54px; line-height: 1;
+  z-index: 3;
+  transition: right 1.8s cubic-bezier(.25,.8,.25,1);
+}
+#enemy-walk.appear { right: 80px; }
+
+#walk-msg {
+  position: absolute;
+  top: 14px; width: 100%;
+  text-align: center;
+  font-size: 17px; font-weight: bold;
+  color: #ff4400;
+  z-index: 5;
+  text-shadow: 0 0 10px #ff4400;
+}
+
+#walk-status {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 15px;
+}
+
+#level-label { color: #888; }
+
+#hp-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#hp-bar-bg {
+  width: 200px; height: 13px;
+  background: #222;
+  border-radius: 7px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+#hp-bar {
+  height: 100%; width: 100%;
+  background: #00cc66;
+  border-radius: 7px;
+  transition: width 0.3s ease, background 0.3s;
+}
+
+/* === БОЙ === */
+#screen-fight { gap: 20px; }
+
+#fight-area {
+  display: flex;
+  align-items: center;
+  width: 780px;
+  background: #0d1117;
+  border: 2px solid #1e2a1e;
+  border-radius: 16px;
+  padding: 24px 16px;
+  position: relative;
+}
+
+.fighter {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#hero-char {
+  font-size: 76px; line-height: 1;
+  transform: scaleX(-1);
+}
+
+#enemy-char {
+  font-size: 76px; line-height: 1;
+}
+
+#hero-char.attack  { animation: punch-right 0.28s ease; }
+#enemy-char.attack { animation: punch-left  0.28s ease; }
+#hero-char.hit     { animation: shake 0.28s ease; }
+#enemy-char.hit    { animation: shake 0.28s ease; }
+#hero-char.special { animation: special-hero 0.5s ease; }
+#hero-char.dead    { animation: fall-over 0.6s ease forwards; }
+#enemy-char.dead   { animation: fall-over 0.6s ease forwards; }
+
+@keyframes punch-right {
+  0%   { transform: translateX(0)    scale(1); }
+  45%  { transform: translateX(48px) scale(1.15); }
+  100% { transform: translateX(0)    scale(1); }
+}
+@keyframes punch-left {
+  0%   { transform: translateX(0)     scale(1); }
+  45%  { transform: translateX(-48px) scale(1.15); }
+  100% { transform: translateX(0)     scale(1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-10px); }
+  75%       { transform: translateX(10px); }
+}
+@keyframes special-hero {
+  0%   { transform: scale(1) rotate(0deg); }
+  30%  { transform: scale(1.4) rotate(-15deg); }
+  60%  { transform: scale(1.3) rotate(10deg) translateX(60px); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes fall-over {
+  0%   { transform: rotate(0deg); opacity: 1; }
+  100% { transform: rotate(90deg) translateX(50px); opacity: 0; }
+}
+
+.fighter-name { font-size: 15px; font-weight: bold; color: #ccc; }
+
+.hp-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #888;
+}
+
+.hp-bar-bg {
+  width: 150px; height: 12px;
+  background: #222;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+.hp-bar-bg > div {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease, background 0.3s;
+}
+
+#hero-hp-bar  { width: 100%; background: #00cc66; }
+#enemy-hp-bar { width: 100%; background: #ff4444; }
+
+/* Центр боя */
+#fight-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 190px;
+}
+
+#vs-label { font-size: 30px; }
+
+#fight-log {
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 3px;
+  text-align: center;
+  font-size: 12px;
+  color: #555;
+}
+.log-hero   { color: #00ff88; }
+.log-enemy  { color: #ff6644; }
+.log-system { color: #ffcc00; }
+
+/* Шкала спецатаки */
+#special-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+#special-label {
+  font-size: 11px;
+  color: #886600;
+  letter-spacing: 0.5px;
+}
+#special-bar-bg {
+  width: 150px; height: 7px;
+  background: #1a1a00;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #333300;
+}
+#special-bar {
+  height: 100%; width: 0%;
+  background: #ffcc00;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+#special-bar.full { background: #ffee00; box-shadow: 0 0 6px #ffcc00; }
+
+/* Управление */
+#fight-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.fight-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+#btn-attack {
+  font-size: 20px;
+  padding: 13px 40px;
+  background: #aa1100;
+  color: #fff;
+}
+#btn-attack:hover:not(:disabled) { background: #ff2200; }
+
+#btn-special {
+  font-size: 20px;
+  padding: 13px 40px;
+  background: #886600;
+  color: #fff;
+}
+#btn-special:not(:disabled):hover { background: #ffcc00; color: #000; }
+
+.hint { font-size: 12px; color: #444; }
+
+/* Плавающие числа урона */
+.dmg-float {
+  position: absolute;
+  font-size: 26px; font-weight: bold;
+  pointer-events: none;
+  animation: float-up 0.9s ease forwards;
+  z-index: 10;
+}
+.dmg-hero  { color: #ff4444; }
+.dmg-enemy { color: #00ff88; }
+.dmg-special { color: #ffcc00; font-size: 32px; }
+
+@keyframes float-up {
+  0%   { transform: translateY(0);     opacity: 1; }
+  100% { transform: translateY(-60px); opacity: 0; }
+}
+
+/* === ПОБЕДА / ПОРАЖЕНИЕ === */
+.result-icon { font-size: 80px; margin-bottom: 10px; }
+
+#screen-win h1 {
+  font-size: 52px;
+  color: #ffcc00;
+  text-shadow: 0 0 20px #ffaa00;
+  margin-bottom: 10px;
+}
+.win-score {
+  font-size: 22px;
+  color: #00ff88;
+  margin-bottom: 24px;
+}
+
+#screen-lose h1 {
+  font-size: 52px;
+  color: #ff3300;
+  text-shadow: 0 0 20px #ff3300;
+  margin-bottom: 10px;
+}
+
+/* === КНОПКА ЗВУКА === */
+#btn-mute {
+  position: fixed;
+  top: 16px; right: 16px;
+  width: 44px; height: 44px;
+  padding: 0;
+  font-size: 22px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  color: #fff;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#btn-mute:hover { background: rgba(255,255,255,0.18); }
